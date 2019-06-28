@@ -1,17 +1,34 @@
 package com.hackerrank.github.model;
 
-public class Actor {
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
+@Entity
+public class Actor implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique = true)
     private String login;
-    private String avatar;
+
+    @Column
+    private String avatarUrl;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "actor")
+    private List<Event> eventList;
 
     public Actor() {
     }
 
-    public Actor(Long id, String login, String avatar) {
+    public Actor(Long id, String login, String avatarUrl) {
         this.id = id;
         this.login = login;
-        this.avatar = avatar;
+        this.avatarUrl = avatarUrl;
     }
     
     public Long getId() {
@@ -30,11 +47,20 @@ public class Actor {
         this.login = login;
     }
     
-    public String getAvatar() {
-        return avatar;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
     
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public List<Event> getEventList() {
+        return eventList;
+    }
+
+    public Actor setEventList(List<Event> eventList) {
+        this.eventList = eventList;
+        return this;
     }
 }

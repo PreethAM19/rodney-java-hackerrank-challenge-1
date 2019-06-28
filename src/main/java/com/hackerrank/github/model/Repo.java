@@ -1,9 +1,26 @@
 package com.hackerrank.github.model;
 
-public class Repo {
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
+@Entity
+public class Repo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column
     private String name;
+
+    @Column
     private String url;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "repo")
+    private List<Event> eventList;
 
     public Repo() {
     }
@@ -36,5 +53,14 @@ public class Repo {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public List<Event> getEventList() {
+        return eventList;
+    }
+
+    public Repo setEventList(List<Event> eventList) {
+        this.eventList = eventList;
+        return this;
     }
 }
