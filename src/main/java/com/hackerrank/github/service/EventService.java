@@ -1,11 +1,14 @@
 package com.hackerrank.github.service;
 
 import com.hackerrank.github.datautil.ErrorOperationResult;
+import com.hackerrank.github.model.Actor;
 import com.hackerrank.github.model.Event;
 import com.hackerrank.github.datautil.OperationResult;
 import com.hackerrank.github.datautil.SuccessfulOperationResult;
+import com.hackerrank.github.model.Repo;
 import com.hackerrank.github.repository.ActorRepository;
 import com.hackerrank.github.repository.EventRepository;
+import com.hackerrank.github.repository.RepoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,10 +24,12 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final ActorRepository actorRepository;
+    private final RepoRepository repoRepository;
 
-    public EventService(EventRepository eventRepository, ActorRepository actorRepository) {
+    public EventService(EventRepository eventRepository, ActorRepository actorRepository, RepoRepository repoRepository) {
         this.eventRepository = eventRepository;
         this.actorRepository = actorRepository;
+        this.repoRepository = repoRepository;
     }
 
     public void eraseAllEvents() {
@@ -42,9 +47,27 @@ public class EventService {
     }
 
     private OperationResult saveEvent(Event event) {
+        Actor actor = event.getActor();
+        Long actorID = actor.getId();
+        if (Objects.nonNull(actorID)) {
+            if (!actorRepository.exists(actorID)) {
+
+                Actor actorSaved = actorRepository.save(actor);
+                System.out.println(actorSaved);
+            }
+        }
+        Repo repo = event.getRepo();
+        Long repoID = repo.getId();
+        if (Objects.nonNull(repoID)) {
+            if (!repoRepository.exists(repoID)) {
+
+                Repo repoSaved = repoRepository.save(repo);
+                System.out.println(repoSaved);
+            }
+        }
         Event eventSaved = eventRepository.save(event);
         if (Objects.nonNull(eventSaved)) {
-            return new SuccessfulOperationResult(eventSaved, "Success", 201);
+            return new SuccessfulOperationResult(null, "Success", 201);
         }
         return new ErrorOperationResult(null, "Server Error Occurred.Kindly retry", 500);
     }

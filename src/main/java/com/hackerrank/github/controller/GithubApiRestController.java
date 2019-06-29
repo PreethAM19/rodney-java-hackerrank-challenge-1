@@ -44,7 +44,7 @@ public class GithubApiRestController {
         OperationResult operationResult = eventService.addNewEvent(event);
 
         return ResponseEntity.status(operationResult.getStatusCode())
-                .body(operationResult.getData());
+                .body(null);
     }
 
     /**
@@ -77,7 +77,7 @@ public class GithubApiRestController {
     @GetMapping("/events/actors/{actorID}")
     public ResponseEntity<?> getAllEventsByActor(@PathVariable Long actorID) {
         OperationResult operationResult = eventService.getAllEventsByActor(actorID);
-        
+
         return ResponseEntity.status(operationResult.getStatusCode())
                 .body(operationResult.getData());
     }

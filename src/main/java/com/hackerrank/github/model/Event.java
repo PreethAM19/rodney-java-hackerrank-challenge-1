@@ -1,16 +1,19 @@
 package com.hackerrank.github.model;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
+
 
 @Entity
-public class Event implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(unique = true)
     private Long id;
 
     @Column
@@ -24,7 +27,9 @@ public class Event implements Serializable {
     @ManyToOne
     private Repo repo;
 
-    @Column
+    //@Column
+    //@JsonProperty(value = "created_at")
+    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     private Timestamp createdAt;
 
     public Event() {
@@ -70,7 +75,7 @@ public class Event implements Serializable {
         this.repo = repo;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 

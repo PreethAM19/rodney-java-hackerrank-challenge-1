@@ -1,16 +1,13 @@
 package com.hackerrank.github.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Repo implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Repo{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(unique = true)
     private Long id;
 
     @Column
