@@ -42,9 +42,9 @@ public class GithubApiRestController {
     @PostMapping("/events")
     public ResponseEntity<?> addNewEvent(@RequestBody Event event) {
         OperationResult operationResult = eventService.addNewEvent(event);
-
+        Object data = operationResult.getData();
         return ResponseEntity.status(operationResult.getStatusCode())
-                .body(null);
+                .body(data);
     }
 
     /**

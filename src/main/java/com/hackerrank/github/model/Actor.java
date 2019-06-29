@@ -1,10 +1,12 @@
 package com.hackerrank.github.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
+
 
 @Entity
 public class Actor {
@@ -19,6 +21,7 @@ public class Actor {
     @Column
     private String avatarUrl;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "actor")
     private List<Event> eventList;
 

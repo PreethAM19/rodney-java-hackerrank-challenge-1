@@ -67,7 +67,7 @@ public class EventService {
         }
         Event eventSaved = eventRepository.save(event);
         if (Objects.nonNull(eventSaved)) {
-            return new SuccessfulOperationResult(null, "Success", 201);
+            return new SuccessfulOperationResult(eventSaved, "Success", 201);
         }
         return new ErrorOperationResult(null, "Server Error Occurred.Kindly retry", 500);
     }

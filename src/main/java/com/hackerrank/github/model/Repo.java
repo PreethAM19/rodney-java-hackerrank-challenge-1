@@ -1,10 +1,13 @@
 package com.hackerrank.github.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
+
 @Entity
-public class Repo{
+public class Repo {
 
     @Id
     @Column(unique = true)
@@ -16,6 +19,7 @@ public class Repo{
     @Column
     private String url;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "repo")
     private List<Event> eventList;
 
