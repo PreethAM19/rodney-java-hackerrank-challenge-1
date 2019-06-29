@@ -58,7 +58,7 @@ public class GithubApiRestController {
      */
     @GetMapping("/events")
     public ResponseEntity<?> getAllEvents() {
-        OperationResult operationResult = eventService.getAllEventsOrderedByIdAsc();
+        OperationResult operationResult = eventService.getAllEventsOrderedByIdAscending();
 
         return ResponseEntity.status(operationResult.getStatusCode()).body(operationResult.getData());
     }
@@ -76,7 +76,7 @@ public class GithubApiRestController {
      */
     @GetMapping("/events/actors/{actorID}")
     public ResponseEntity<?> getAllEventsByActor(@PathVariable Long actorID) {
-        OperationResult operationResult = eventService.getAllEventsByActor(actorID);
+        OperationResult operationResult = eventService.getAllEventsByActorOrderByIdAscending(actorID);
 
         return ResponseEntity.status(operationResult.getStatusCode())
                 .body(operationResult.getData());

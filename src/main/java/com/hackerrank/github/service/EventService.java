@@ -77,12 +77,12 @@ public class EventService {
      *
      * @return
      */
-    public OperationResult getAllEventsOrderedByIdAsc() {
+    public OperationResult getAllEventsOrderedByIdAscending() {
         List<Event> eventList = eventRepository.findAllByOrderByIdAsc();
         return new SuccessfulOperationResult(eventList, "Success", 200);
     }
 
-    public OperationResult getAllEventsByActor(Long actorId) {
+    public OperationResult getAllEventsByActorOrderByIdAscending(Long actorId) {
         if (actorRepository.exists(actorId)) {
             List<Event> eventList = eventRepository.findAllByActor_IdOrderByIdAsc(actorId);
             return new SuccessfulOperationResult(eventList, "Success", 200);
