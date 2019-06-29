@@ -25,6 +25,12 @@ public class Actor {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "actor")
     private List<Event> eventList;
 
+    /**
+     * Field used to enable optimistic locking
+     */
+    @Version
+    private Integer version;
+
     public Actor() {
     }
 
@@ -65,6 +71,15 @@ public class Actor {
 
     public Actor setEventList(List<Event> eventList) {
         this.eventList = eventList;
+        return this;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public Actor setVersion(Integer version) {
+        this.version = version;
         return this;
     }
 }

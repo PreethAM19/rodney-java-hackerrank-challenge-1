@@ -1,6 +1,8 @@
 package com.hackerrank.github.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -24,7 +26,7 @@ public class Event {
     private Repo repo;
 
     @Column
-    //@JsonProperty(value = "created_at")
+    @JsonProperty(value = "created_at")
     //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     private Timestamp createdAt;
 

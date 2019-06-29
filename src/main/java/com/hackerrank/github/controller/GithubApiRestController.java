@@ -1,7 +1,9 @@
 package com.hackerrank.github.controller;
 
 import com.hackerrank.github.datautil.OperationResult;
+import com.hackerrank.github.model.Actor;
 import com.hackerrank.github.model.Event;
+import com.hackerrank.github.service.ActorService;
 import com.hackerrank.github.service.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class GithubApiRestController {
 
     private final EventService eventService;
+    private final ActorService actorService;
 
-    public GithubApiRestController(EventService eventService) {
+    public GithubApiRestController(EventService eventService, ActorService actorService) {
         this.eventService = eventService;
+        this.actorService = actorService;
     }
 
     /**
@@ -54,7 +58,7 @@ public class GithubApiRestController {
      * The HTTP response code should be 200.
      * The JSON array should be sorted in ascending order by event ID.
      *
-     * @return
+     * @return {@link ResponseEntity}
      */
     @GetMapping("/events")
     public ResponseEntity<?> getAllEvents() {
@@ -80,5 +84,27 @@ public class GithubApiRestController {
 
         return ResponseEntity.status(operationResult.getStatusCode())
                 .body(operationResult.getData());
+    }
+
+    /**
+     * 5.Updating the avatar URL of the actor:
+     * The service should be able to update the avatar URL of
+     * the actor by the PUT request at /actors.
+     * The actor JSON is sent in the request body.
+     * If the actor with the id does not exist
+     * then the response code should be 404,
+     * or if there are other fields being updated for the actor
+     * then the HTTP response code should be 400,
+     * otherwise, the response code should be 200.
+     *
+     * @param actor
+     * @return
+     */
+    @PutMapping("/actors")
+    public ResponseEntity<?> updateActor(@RequestBody Actor actor) {
+        OperationResult operationResult = actorService.updateActorEntity(actor);
+
+        return ResponseEntity.status(operationResult.getStatusCode())
+                .body((operationResult.getData() == null) ? operationResult.getReason() : operationResult.getData());
     }
 }
