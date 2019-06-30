@@ -49,7 +49,7 @@ public class EventsApiRestController {
         OperationResult operationResult = eventService.addNewEvent(event);
         Object data = operationResult.getData();
         return ResponseEntity.status(operationResult.getStatusCode())
-                .body(data);
+                .body(null);
     }
 
     /**

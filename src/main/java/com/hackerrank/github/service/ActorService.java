@@ -1,5 +1,6 @@
 package com.hackerrank.github.service;
 
+import com.hackerrank.github.comparator.ActorMaximumStreakSortingComparator;
 import com.hackerrank.github.comparator.ActorSortingComparator;
 import com.hackerrank.github.datautil.ErrorOperationResult;
 import com.hackerrank.github.datautil.OperationResult;
@@ -9,10 +10,8 @@ import com.hackerrank.github.repository.ActorRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.OptimisticLockException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
 
 /**
  * author: acerbk
@@ -28,12 +27,37 @@ public class ActorService {
         this.actorRepository = actorRepository;
     }
 
+    /**
+     * * 7.Returning the actor records ordered by the maximum streak:
+     * * The service should be able to return the JSON array of all the actors
+     * * sorted by the maximum streak (i.e., the total number of consecutive days actor has pushed an event to the system)
+     * * in descending order by the GET request at /actors/streak.
+     * * If there are more than one actors with the same maximum streak,
+     * * then order them by the timestamp of the latest event in the descending order.
+     * * If more than one actors have the same timestamp for the latest event,
+     * * then order them by the alphabetical order of login.
+     * * The HTTP response code should be 200.
+     *
+     * @return
+     */
+    public OperationResult getAllActorsByHighestStreak() {
+        List<Actor> actors = new ArrayList<>(0);
+        actorRepository.findAll().forEach(actors::add);
+
+        ActorMaximumStreakSortingComparator actorMaximumStreakSortingComparator = new ActorMaximumStreakSortingComparator();
+        Collections.sort(actors, actorMaximumStreakSortingComparator);
+
+        return new SuccessfulOperationResult(actors, "Successs", 200);
+    }
+
     public OperationResult getAllActors() {
         List<Actor> actors = new ArrayList<>(0);
         actorRepository.findAll().forEach(actors::add);
 
         ActorSortingComparator actorSortingComparator = new ActorSortingComparator();
-        Collections.sort(actors, actorSortingComparator);
+        Collections.sort(actors, actorSortingComparator.reversed()); //reverse final ordered list after applying comparator
+
+        //Stream.of(actors).sorted(actorSortingComparator.reversed());
 
         return new SuccessfulOperationResult(actors, "Successs", 200);
     }

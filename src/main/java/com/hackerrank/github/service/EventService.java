@@ -37,10 +37,12 @@ public class EventService {
     }
 
     public OperationResult addNewEvent(Event event) {
-        if (event.getId() != null) {
+
+        if (Objects.nonNull(event.getId())) {
             if (!eventRepository.exists(event.getId())) {
                 return saveEvent(event);
             }
+            System.out.println("before adding event ==="+eventRepository.findOne(event.getId()).getActor().getLogin());
             return new ErrorOperationResult(null, "event with id of " + event.getId() + " already exists", 400);
         }
         return saveEvent(event);
@@ -54,8 +56,11 @@ public class EventService {
 
                 Actor actorSaved = actorRepository.save(actor);
                 System.out.println(actorSaved);
+            } else {
+                event.setActor(actorRepository.findOne(actorID));
             }
         }
+
         Repo repo = event.getRepo();
         Long repoID = repo.getId();
         if (Objects.nonNull(repoID)) {
@@ -63,6 +68,8 @@ public class EventService {
 
                 Repo repoSaved = repoRepository.save(repo);
                 System.out.println(repoSaved);
+            } else {
+                event.setRepo(repoRepository.findOne(repoID));
             }
         }
         Event eventSaved = eventRepository.save(event);

@@ -17,11 +17,11 @@ public class Event {
     private String type;
 
     @JoinColumn(referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Actor actor;
 
     @JoinColumn(referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Repo repo;
 
     @Column

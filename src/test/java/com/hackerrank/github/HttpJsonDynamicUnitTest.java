@@ -228,6 +228,7 @@ public class HttpJsonDynamicUnitTest {
                                                             .contentType(CONTENT_TYPE_JSON));
                                                     MockHttpServletResponse mockResponse = resultActions.andReturn()
                                                             .getResponse();
+                                                    System.out.println("\n*******..."+mockResponse.getContentAsString()+"\n"+"\n status ==="+mockResponse.getStatus()+"\n");
 
                                                     validateStatusCode(filename, method + " " + url,
                                                             statusCode, String.valueOf(mockResponse.getStatus()));
@@ -355,6 +356,7 @@ public class HttpJsonDynamicUnitTest {
             String reason = "Status code";
             addTestFailure(filename, new Pair(new Pair(testcase, reason), new Pair(expected, found)));
 
+            System.out.println("\n\n\n\t\t$$$$$$$$$$$$$$$$$$$$$$$$Failed file name ======"+filename+" testcase ===="+testcase+" expected====="+expected+" found========"+found+" \n\n\n");
             return false;
         }
 

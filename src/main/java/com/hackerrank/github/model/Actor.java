@@ -28,6 +28,7 @@ public class Actor {
     /**
      * Field used to enable optimistic locking
      */
+    @JsonIgnore
     @Version
     private Integer version;
 

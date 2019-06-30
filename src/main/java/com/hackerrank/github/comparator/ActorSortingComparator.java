@@ -3,9 +3,6 @@ package com.hackerrank.github.comparator;
 import com.hackerrank.github.model.Actor;
 import com.hackerrank.github.model.Event;
 
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -52,35 +49,6 @@ public class ActorSortingComparator implements Comparator<Actor> {
             return -1; //less than actor 2
         }
 
-            // it's the same number of events,therefore order further by timestamp
-            List<Timestamp> timestampsOfActor1 = getTimeStampsOfEventList(actorEvents1);
-            Timestamp maxTimestampOfActor1 = getMaxTimestamp(timestampsOfActor1);
-
-            List<Timestamp> timestampsOfActor2 = getTimeStampsOfEventList(actorEvents2);
-            Timestamp maxTimestampOfActor2 = getMaxTimestamp(timestampsOfActor2);
-
-            int resultOfComparingMaxTimestampsOfBothActors = maxTimestampOfActor1.compareTo(maxTimestampOfActor2);
-
-            //now since comparing both maximum timestamps and they are the same,we use the login names to compare
-            if (resultOfComparingMaxTimestampsOfBothActors == 0) {
-
-                String loginNameActor1 = actor1.getLogin().trim();
-                String loginNameActor2 = actor2.getLogin().trim();
-
-                //finally we compare the strings ignoring case and since the login name is unique,
-                // we can be sure that the list will be sorted perfectly
-                return loginNameActor1.compareToIgnoreCase(loginNameActor2);
-            }
-            return resultOfComparingMaxTimestampsOfBothActors; //it will be greater than or equal so we return it
-    }
-
-    private Timestamp getMaxTimestamp(List<Timestamp> timestampsList) {
-        return timestampsList.stream().max(Timestamp::compareTo).get();
-    }
-
-    private List<Timestamp> getTimeStampsOfEventList(List<Event> eventsList) {
-        List<Timestamp> timestampList = new ArrayList<>();
-        eventsList.forEach(event -> timestampList.add(event.getCreatedAt()));
-        return timestampList;
+        return ActorTimeStampFurtherComparator.getInstance().compareTo(actor1, actor2);
     }
 }

@@ -4,6 +4,7 @@ import com.hackerrank.github.datautil.OperationResult;
 import com.hackerrank.github.model.Actor;
 import com.hackerrank.github.service.ActorService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +42,7 @@ public class ActorsApiRestController {
         OperationResult operationResult = actorService.updateActorEntity(actor);
 
         return ResponseEntity.status(operationResult.getStatusCode())
-                .body((operationResult.getData() == null) ? operationResult.getReason() : operationResult.getData());
+                .body(null);
     }
 
     /***
@@ -55,9 +56,32 @@ public class ActorsApiRestController {
      *
      * @return
      */
+    @GetMapping("/actors")
     public ResponseEntity<?> getAllActors() {
         OperationResult operationResult = actorService.getAllActors();
 
-        return ResponseEntity.status(operationResult.getStatusCode()).body(operationResult.getData());
+        return ResponseEntity.status(operationResult.getStatusCode())
+                .body(operationResult.getData());
+    }
+
+    /**
+     * 7.Returning the actor records ordered by the maximum streak:
+     * The service should be able to return the JSON array of all the actors
+     * sorted by the maximum streak (i.e., the total number of consecutive days actor has pushed an event to the system)
+     * in descending order by the GET request at /actors/streak.
+     * If there are more than one actors with the same maximum streak,
+     * then order them by the timestamp of the latest event in the descending order.
+     * If more than one actors have the same timestamp for the latest event,
+     * then order them by the alphabetical order of login.
+     * The HTTP response code should be 200.
+     *
+     * @return
+     */
+    @GetMapping("/actors/streak")
+    public ResponseEntity<?> getAllActorsByHighestStreak() {
+        OperationResult operationResult = actorService.getAllActorsByHighestStreak();
+
+        return ResponseEntity.status(operationResult.getStatusCode())
+                .body(operationResult.getData());
     }
 }
