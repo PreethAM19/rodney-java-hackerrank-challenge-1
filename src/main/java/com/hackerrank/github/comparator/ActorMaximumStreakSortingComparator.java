@@ -1,5 +1,6 @@
 package com.hackerrank.github.comparator;
 
+import com.hackerrank.github.exception.SameDayException;
 import com.hackerrank.github.model.Actor;
 import com.hackerrank.github.model.Event;
 import com.hackerrank.github.util.DateUtil;
@@ -38,8 +39,15 @@ public class ActorMaximumStreakSortingComparator implements Comparator<Actor> {
 
         Timestamp maxTimeStamp = DateUtil.getInstance().getMaxTimestamp(timestampList);
 
-        long numberOfDaysDifferenceBetweenMinAndMaxTimestamps =
-                DateUtil.getInstance().getDifferenceInNumberOfDays(minTimeStamp, maxTimeStamp);
+        long numberOfDaysDifferenceBetweenMinAndMaxTimestamps;
+        try {
+            numberOfDaysDifferenceBetweenMinAndMaxTimestamps = new Long(
+                    DateUtil.getInstance().getDifferenceInNumberOfDays(minTimeStamp, maxTimeStamp));
+        } catch (SameDayException sameDayException) {
+            System.out.println("same day return 1.........");
+            return 1;//since 0 is being returned,we know that the different number of Days for the timestamps list is the same day so return 1
+        }
+
 
         int maxStreakOfDays = findMaxStreakOfDays(minTimeStamp,
                 maxTimeStamp,
