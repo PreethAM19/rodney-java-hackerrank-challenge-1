@@ -1,5 +1,6 @@
 package com.hackerrank.github.service;
 
+import com.hackerrank.github.comparator.ActorSortingComparator;
 import com.hackerrank.github.datautil.ErrorOperationResult;
 import com.hackerrank.github.datautil.OperationResult;
 import com.hackerrank.github.datautil.SuccessfulOperationResult;
@@ -8,6 +9,9 @@ import com.hackerrank.github.repository.ActorRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.OptimisticLockException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,12 +28,22 @@ public class ActorService {
         this.actorRepository = actorRepository;
     }
 
+    public OperationResult getAllActors() {
+        List<Actor> actors = new ArrayList<>(0);
+        actorRepository.findAll().forEach(actors::add);
+
+        ActorSortingComparator actorSortingComparator = new ActorSortingComparator();
+        Collections.sort(actors, actorSortingComparator);
+
+        return new SuccessfulOperationResult(actors, "Successs", 200);
+    }
+
     public OperationResult updateActorEntity(Actor actor) {
         if (Objects.nonNull(actor.getId())) {
             Long actorID = actor.getId();
             if (actorRepository.exists(actorID)) {
                 try {
-                    Actor finalActorToUpdate = updateActorFields(actor,actorRepository.findOne(actorID));
+                    Actor finalActorToUpdate = updateActorFields(actor, actorRepository.findOne(actorID));
                     Actor actorUpdated = actorRepository.save(finalActorToUpdate);
                     return new SuccessfulOperationResult(actorUpdated, "successfully updated", 200);
                 } catch (OptimisticLockException optimisticLockException) {
@@ -46,6 +60,6 @@ public class ActorService {
         if (Objects.nonNull(actorEntityToUpdate.getAvatarUrl())) {
             actorDbVersion.setAvatarUrl(actorEntityToUpdate.getAvatarUrl());
         }
-       return actorDbVersion;
+        return actorDbVersion;
     }
 }
