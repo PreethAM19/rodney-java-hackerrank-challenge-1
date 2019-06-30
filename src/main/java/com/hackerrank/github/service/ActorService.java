@@ -45,7 +45,7 @@ public class ActorService {
         actorRepository.findAll().forEach(actors::add);
 
         ActorMaximumStreakSortingComparator actorMaximumStreakSortingComparator = new ActorMaximumStreakSortingComparator();
-        Collections.sort(actors, actorMaximumStreakSortingComparator);
+        Collections.sort(actors, actorMaximumStreakSortingComparator.reversed()); //reverse it
 
         return new SuccessfulOperationResult(actors, "Successs", 200);
     }
