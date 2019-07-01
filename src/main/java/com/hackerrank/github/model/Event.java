@@ -29,13 +29,6 @@ public class Event {
     @JsonProperty(value = "created_at")
     private Timestamp createdAt;
 
-    /**
-     * Field used to enable optimistic locking
-     */
-    @JsonIgnore
-    @Version
-    private Integer version;
-
     public Event() {
     }
 
@@ -87,12 +80,4 @@ public class Event {
         this.createdAt = createdAt;
     }
 
-    public Integer getVersion() {
-        return version;
-    }
-
-    public Event setVersion(Integer version) {
-        this.version = version;
-        return this;
-    }
 }

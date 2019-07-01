@@ -66,7 +66,6 @@ public class ActorMaximumStreakSortingComparator implements Comparator<Actor> {
             numberOfDaysDifferenceBetweenMinAndMaxTimestamps = new Long(
                     DateUtil.getInstance().getDifferenceInNumberOfDays(minTimeStamp, maxTimeStamp));
         } catch (SameDayException sameDayException) {
-            System.out.println("same day return 1.........");
             return 1;//since 0 is being returned,we know that the different number of Days for the timestamps list is the same day so return 1
         }
 
