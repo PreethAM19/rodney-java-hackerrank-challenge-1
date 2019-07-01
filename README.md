@@ -2,7 +2,7 @@
 
 ### Quick Start
 ```$xslt
-1. mvn clean spring-boot:run (run application,defaults to localhost:8000)
+1. mvn clean spring-boot:run (run application,defaults to http://localhost:8000)
 OR 
 2. mvn clean install (INSTALL)
 OR 
@@ -18,7 +18,7 @@ or
 
 2. docker build -t rodney-hackerrank-java-app .
 
-3. docker run -p 8000:8000 rodney-hackerrank-java-app
+3. docker run -p 8000:8000 rodney-hackerrank-java-app (application will be live on http://127.0.0.1:8000
 
 You can type : docker images (to show docker images )
 ```
