@@ -42,7 +42,8 @@ public class EventService {
             if (!eventRepository.exists(event.getId())) {
                 return saveEvent(event);
             }
-            System.out.println("before adding event ==="+eventRepository.findOne(event.getId()).getActor().getLogin());
+            Event eventInDB = eventRepository.findOne(event.getId());
+            System.out.println("before adding event ==="+eventInDB.getActor().toString());
             return new ErrorOperationResult(null, "event with id of " + event.getId() + " already exists", 400);
         }
         return saveEvent(event);

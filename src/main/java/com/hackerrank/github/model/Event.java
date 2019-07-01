@@ -1,6 +1,7 @@
 package com.hackerrank.github.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -26,8 +27,14 @@ public class Event {
 
     @Column
     @JsonProperty(value = "created_at")
-    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     private Timestamp createdAt;
+
+    /**
+     * Field used to enable optimistic locking
+     */
+    @JsonIgnore
+    @Version
+    private Integer version;
 
     public Event() {
     }
@@ -78,5 +85,14 @@ public class Event {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public Event setVersion(Integer version) {
+        this.version = version;
+        return this;
     }
 }
