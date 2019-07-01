@@ -83,4 +83,9 @@ public class Actor {
         this.version = version;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "{ id : "+id+ " ,login : "+login+" ,avatarUrl : "+avatarUrl+" }";
+    }
 }

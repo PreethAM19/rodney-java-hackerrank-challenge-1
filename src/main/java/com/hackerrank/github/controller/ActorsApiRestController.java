@@ -57,8 +57,8 @@ public class ActorsApiRestController {
      * @return
      */
     @GetMapping("/actors")
-    public ResponseEntity<?> getAllActors() {
-        OperationResult operationResult = actorService.getAllActors();
+    public ResponseEntity<?> getAllActorsByTotalNumberOfEvents() {
+        OperationResult operationResult = actorService.getAllActorsByTotalNumberOfEvents();
 
         return ResponseEntity.status(operationResult.getStatusCode())
                 .body(operationResult.getData());

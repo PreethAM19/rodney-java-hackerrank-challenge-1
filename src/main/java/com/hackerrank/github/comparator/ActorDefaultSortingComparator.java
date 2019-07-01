@@ -20,12 +20,13 @@ import java.util.List;
  * <p>
  * <p>
  */
-public class ActorSortingComparator implements Comparator<Actor> {
+public class ActorDefaultSortingComparator implements Comparator<Actor> {
 
     /**
      * -1= actor1 less than actor2
      * 0= actor1 equal to actor2
      * 1= actor1 greater than actor2
+     * but since we need it descending order,we return numbers in vice versa format except 0 is same
      *
      * @param actor1
      * @param actor2
@@ -41,12 +42,12 @@ public class ActorSortingComparator implements Comparator<Actor> {
         int eventSizeOfActor2 = actorEvents2.size();
 
         //compare the number of elements in actor1 and actor 2,if actor1 has more elements,return 1.
-        // if actor1 has less,return -1
+        // if actor1 has less,return -1,but since we need it in descending order we go vice-versa.
         if (eventSizeOfActor1 > eventSizeOfActor2) {
-            return 1; //greater than actor 2
+            return -1; //greater than actor 2
         }
         if (eventSizeOfActor1 < eventSizeOfActor2) {
-            return -1; //less than actor 2
+            return 1; //less than actor 2
         }
 
         return ActorTimeStampFurtherComparator.getInstance().compareTo(actor1, actor2);

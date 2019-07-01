@@ -1,7 +1,7 @@
 package com.hackerrank.github.service;
 
 import com.hackerrank.github.comparator.ActorMaximumStreakSortingComparator;
-import com.hackerrank.github.comparator.ActorSortingComparator;
+import com.hackerrank.github.comparator.ActorDefaultSortingComparator;
 import com.hackerrank.github.datautil.ErrorOperationResult;
 import com.hackerrank.github.datautil.OperationResult;
 import com.hackerrank.github.datautil.SuccessfulOperationResult;
@@ -45,19 +45,19 @@ public class ActorService {
         actorRepository.findAll().forEach(actors::add);
 
         ActorMaximumStreakSortingComparator actorMaximumStreakSortingComparator = new ActorMaximumStreakSortingComparator();
-        Collections.sort(actors, actorMaximumStreakSortingComparator.reversed()); //reverse it
+        Collections.sort(actors, actorMaximumStreakSortingComparator);
 
         return new SuccessfulOperationResult(actors, "Successs", 200);
     }
 
-    public OperationResult getAllActors() {
+    public OperationResult getAllActorsByTotalNumberOfEvents() {
         List<Actor> actors = new ArrayList<>(0);
         actorRepository.findAll().forEach(actors::add);
 
-        ActorSortingComparator actorSortingComparator = new ActorSortingComparator();
-        Collections.sort(actors, actorSortingComparator.reversed()); //reverse final ordered list after applying comparator
+        ActorDefaultSortingComparator actorDefaultSortingComparator = new ActorDefaultSortingComparator();
+        Collections.sort(actors, actorDefaultSortingComparator);
 
-        //Stream.of(actors).sorted(actorSortingComparator.reversed());
+        //Stream.of(actors).sorted(actorDefaultSortingComparator.reversed());
 
         return new SuccessfulOperationResult(actors, "Successs", 200);
     }

@@ -82,6 +82,6 @@ public class DateUtil {
         if (numberOfDays == 0) {
             throw new SameDayException("There is no difference in timestamps provided.They refer to the same day");
         }
-        return numberOfDays;
+        return numberOfDays + 1;
     }
 }

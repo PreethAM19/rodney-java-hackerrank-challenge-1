@@ -9,6 +9,16 @@ import java.sql.Timestamp;
 import java.util.*;
 
 /**
+ * * 7.Returning the actor records ordered by the maximum streak:
+ * * The service should be able to return the JSON array of all the actors
+ * * sorted by the maximum streak (i.e., the total number of consecutive days actor has pushed an event to the system)
+ * * in descending order by the GET request at /actors/streak.
+ * * If there are more than one actors with the same maximum streak,
+ * * then order them by the timestamp of the latest event in the descending order.
+ * * If more than one actors have the same timestamp for the latest event,
+ * * then order them by the alphabetical order of login.
+ * * The HTTP response code should be 200.
+ * <p>
  * author: acerbk
  * Date: 2019-06-30
  * Time: 18:30
@@ -28,12 +38,24 @@ public class ActorMaximumStreakSortingComparator implements Comparator<Actor> {
             return ActorTimeStampFurtherComparator.getInstance().compareTo(actor1, actor2); //same number of maximum streaks ,pass to TimeSorting Comparator
         }
 
-        return (maxStreakOfActor1 < maxStreakOfActor2) ? -1 : 1; //if maxStreak of Actor A is less than B's,return -1,if A>B,then return 1
+        //if maxStreak of Actor A is less than B's,return -1,if A>B,then return 1,
+        // but since we need it in descending order,we make it vice-versa instead
+        return (maxStreakOfActor1 < maxStreakOfActor2) ? 1 : -1;
     }
 
     private int findMaxStreak(List<Event> eventList, String timeZone) {
         List<Timestamp> timestampList = new ArrayList<>();
         eventList.forEach(event -> timestampList.add(event.getCreatedAt()));
+
+        //order timestamp from minimum to maximum so that we can compare if previous date is same as current higher date when we add 1 day to it.
+        timestampList.sort((timestamp1, timestamp2) -> {
+            long timestamp1LongValue = timestamp1.getTime();
+            long timestamp2LongValue = timestamp2.getTime();
+            if (timestamp1LongValue == timestamp2LongValue) {
+                return 0;
+            }
+            return (timestamp1LongValue < timestamp2LongValue) ? -1 : 1;
+        });
 
         Timestamp minTimeStamp = DateUtil.getInstance().getMinTimestamp(timestampList);
 
@@ -115,6 +137,8 @@ public class ActorMaximumStreakSortingComparator implements Comparator<Actor> {
                     int previousIndex = i - 1;
                     Calendar calendarAtPreviousIndex = prepareCalendarObjectFromDate
                             (new Date(timestampList.get(previousIndex).getTime()), timeZone);
+
+                    calendarAtPreviousIndex.add(Calendar.DAY_OF_MONTH, 1); //add 1 day and if after adding 1 day it's still in the currentDay at this index,increment totalStreakCount by 1
 
                     if (isInSameDay(calendarAtIndex, calendarAtPreviousIndex)) {
                         //now we can increase totalStreakCount By 1 since the previous timestamp falls in same day as current one
