@@ -3,7 +3,6 @@ package com.hackerrank.github;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,24 +12,18 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import static java.util.stream.Collectors.toList;
-
 import java.util.stream.Stream;
-
-import com.hackerrank.github.comparator.ActorMaximumStreakSortingComparator;
-import com.hackerrank.github.model.Actor;
-import com.hackerrank.github.model.Event;
 import javafx.util.Pair;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,16 +43,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-
 import org.springframework.web.context.WebApplicationContext;
 
 /**
+ *
  * @author abhimanyusingh
  */
 @RunWith(SpringRunner.class)
@@ -99,8 +91,7 @@ public class HttpJsonDynamicUnitTest {
     Map<String, Pair<Pair<String, String>, Pair<String, String>>> testFailures = new HashMap<>();
 
     @Rule
-    public Stopwatch stopwatch = new Stopwatch() {
-    };
+    public Stopwatch stopwatch = new Stopwatch() {};
 
     @Rule
     public TestWatcher watchman = new TestWatcher() {
@@ -219,7 +210,8 @@ public class HttpJsonDynamicUnitTest {
                                 processedRequestCount.set(processedRequestCount.incrementAndGet());
 
                                 switch (method) {
-                                    case "POST": {
+                                    case "POST":
+                                    {
                                         MediaType contentType = MediaType.ALL;
                                         String type = request.get("headers").get("Content-Type").asText();
 
@@ -236,7 +228,6 @@ public class HttpJsonDynamicUnitTest {
                                                         .contentType(CONTENT_TYPE_JSON));
                                                 MockHttpServletResponse mockResponse = resultActions.andReturn()
                                                         .getResponse();
-                                                System.out.println("\n*******..." + mockResponse.getContentAsString() + "\n" + "\n status ===" + mockResponse.getStatus() + "\n");
 
                                                 validateStatusCode(filename, method + " " + url,
                                                         statusCode, String.valueOf(mockResponse.getStatus()));
@@ -251,7 +242,8 @@ public class HttpJsonDynamicUnitTest {
 
                                         break;
                                     }
-                                    case "PUT": {
+                                    case "PUT":
+                                    {
                                         MediaType contentType = MediaType.ALL;
                                         String type = request.get("headers").get("Content-Type").asText();
 
@@ -363,7 +355,6 @@ public class HttpJsonDynamicUnitTest {
             String reason = "Status code";
             addTestFailure(filename, new Pair(new Pair(testcase, reason), new Pair(expected, found)));
 
-            System.out.println("\n\n\n\t\t$$$$$$$$$$$$$$$$$$$$$$$$Failed file name ======" + filename + " testcase ====" + testcase + " expected=====" + expected + " found========" + found + " \n\n\n");
             return false;
         }
 
@@ -395,12 +386,10 @@ public class HttpJsonDynamicUnitTest {
     private boolean validateJsonResponse(String filename, String testcase, JsonNode expected, JsonNode found) {
         try {
             List<JsonNode> expectedResponseJsonList = OBJECT_MAPPER.readValue(expected.toString(),
-                    new TypeReference<List<JsonNode>>() {
-                    });
+                    new TypeReference<List<JsonNode>>(){});
 
             List<JsonNode> responseBodyJsonList = OBJECT_MAPPER.readValue(found.toString(),
-                    new TypeReference<List<JsonNode>>() {
-                    });
+                    new TypeReference<List<JsonNode>>(){});
 
             if (expectedResponseJsonList.size() != responseBodyJsonList.size()) {
                 String reason = "Response Json array size does not match with the expected array size";
@@ -505,7 +494,7 @@ public class HttpJsonDynamicUnitTest {
             httpJsonFiles.forEach(filename -> {
                 if (failedTestFiles.contains(filename)) {
                     try {
-                        writer.write(Colors.WHITE_BOLD + filename + ": " + Colors.RESET +
+                        writer.write(Colors.WHITE_BOLD + filename +": " + Colors.RESET +
                                 ANSI_FAILURE + " (" + executionTime.get(filename) / 1000.0f + "s)");
                         writer.newLine();
                     } catch (IOException ex) {
@@ -517,7 +506,7 @@ public class HttpJsonDynamicUnitTest {
                     }
                 } else {
                     try {
-                        writer.write(Colors.WHITE_BOLD + filename + ": " + Colors.RESET +
+                        writer.write(Colors.WHITE_BOLD + filename +": " + Colors.RESET +
                                 ANSI_SUCCESS + " (" + executionTime.get(filename) / 1000.0f + "s)");
                         writer.newLine();
                     } catch (IOException ex) {
@@ -589,7 +578,7 @@ public class HttpJsonDynamicUnitTest {
                     .sorted()
                     .forEachOrdered(filename -> {
                         try {
-                            if (!failedTestFiles.contains(filename)) {
+                            if (! failedTestFiles.contains(filename)) {
                                 writer.write(String.format("    <testcase name=\"%s\" classname=\"%s\" time=\"%f\"/>\n",
                                         httpJsonAndTestname.get(filename),
                                         this.getClass().getName(),
@@ -661,7 +650,7 @@ public class HttpJsonDynamicUnitTest {
 
             httpJsonFiles.forEach(filename -> {
                 try {
-                    writer.write(Colors.WHITE_BOLD + filename + ": " + Colors.RESET +
+                    writer.write(Colors.WHITE_BOLD + filename +": " + Colors.RESET +
                             ANSI_FAILURE + " (0s)");
                     writer.newLine();
                 } catch (IOException ex) {
